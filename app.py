@@ -1,47 +1,6 @@
 import streamlit as st
 import random
 
-# ================
-# Background Kimia
-# ================
-page_bg = """
-<style>
-[data-testid="stAppViewContainer"] {
-    background-image: url("https://images.unsplash.com/photo-1581092919535-9123212396c8");
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-h1, h2, h3, .stMarkdown, .stTextInput {
-    color: white !important;
-    text-shadow: 1px 1px 2px black;
-}
-
-[data-testid="stSidebar"] {
-    background-color: #262730;
-    color: white;
-}
-</style>
-"""
-st.markdown(page_bg, unsafe_allow_html=True)
-
-# ==========================
-# Inisialisasi session state
-# ==========================
-if "sudah_mulai" not in st.session_state:
-    st.session_state.sudah_mulai = False
-
-# ===================
-# Sidebar Navigation
-# ===================
-st.sidebar.title("🔬 Navigasi")
-if st.session_state.sudah_mulai:
-    page = st.sidebar.radio("Menu", ["Beranda", "Senyawa Kimia", "Quiz"])
-else:
-    page = st.sidebar.radio("Menu", ["Beranda"])
-
 # ===================
 # Data Senyawa Kimia
 # ===================
@@ -50,9 +9,9 @@ senyawa_kimia = {
         "Asam Sulfat (H₂SO₄)": {
             "Risiko": "Korosif, menyebabkan luka bakar parah pada kulit dan mata.",
             "Penanganan": "Gunakan sarung tangan tahan asam, pelindung mata, dan lab coat.",
-            "APD": "Sarung tangan karet, Googles, Masker, Respirator, Jas lab, Sepatu tertutup."
+            "APD": "Sarung tangan karet, Googles, Masker, Respirator, Jas lab,Sepatu tertutup."
         },
-        "Asam Klorida (HCl)": {
+    "Asam Klorida (HCl)": {
             "Risiko": "Iritasi pada saluran pernapasan dan kulit.",
             "Penanganan": "Gunakan di area berventilasi baik, hindari uap.",
             "APD": "Sarung tangan, pelindung wajah, masker respirator."
@@ -140,33 +99,32 @@ senyawa_kimia = {
         }
     }
 }
+# ===================
+# Sidebar Navigation
+# ===================
+st.sidebar.title("🔬 Navigasi")
+page = st.sidebar.radio("Menu", ["Beranda", "Senyawa Kimia", "Quiz"])
 
 # ===================
 # 1. Halaman Beranda
 # ===================
 if page == "Beranda":
-    st.title("💡 Pengenalan Risiko & Penanganan Senyawa Kimia")
+    st.title("💡 Pengenalan Risiko dan Penanganan Senyawa Kimia")
     st.markdown("""
-<div style='background-color: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 10px'>
-    <h3>🚨 Kimia bukan cuma soal rumus, tapi juga soal <em>keselamatan!</em></h3>
-    <p>Kenali senyawa kimia penting, potensi bahayanya, dan cara penanganannya yang aman 💥🧤</p>
-    <p>Kelompok 4 | Kimia Kesehatan</p>
-</div>
-""", unsafe_allow_html=True)
+🚨 Kimia bukan cuma soal rumus, tapi juga soal *keselamatan!*  
+Kenalan yuk sama *senyawa-senyawa kimia penting*,  
+pelajari potensi bahayanya, dan cari tahu cara aman ngadepinnya 💥🛡
 
-    if not st.session_state.sudah_mulai:
-        if st.button("🚀 Selanjutnya"):
-            st.session_state.sudah_mulai = True
-            st.experimental_rerun()
-    else:
-        st.success("✅ Selamat datang! Gunakan menu di samping untuk mulai belajar.")
-
-# ===================
-# 2. Halaman Senyawa
-# ===================
+Klik menu di samping buat mulai, dan uji wawasanmu di akhir lewat kuis seru!
+""")
+# ============================
+# 2. Halaman Senyawa Kimia
+# ============================
 elif page == "Senyawa Kimia":
     st.title("🧪 Daftar Senyawa Berdasarkan Golongan")
+
     golongan = st.selectbox("Pilih Golongan Senyawa", list(senyawa_kimia.keys()))
+
     if golongan:
         st.subheader(f"📚 Senyawa dalam Golongan: {golongan}")
         for nama, info in senyawa_kimia[golongan].items():
@@ -197,6 +155,7 @@ elif page == "Quiz":
                 ]
             })
 
+    # Random satu pertanyaan
     question = random.choice(all_questions)
 
     st.subheader(question["question"])
@@ -206,4 +165,4 @@ elif page == "Quiz":
         if pilihan == question["answer"]:
             st.success("✅ Jawaban benar!")
         else:
-            st.error(f"❌ Jawaban salah. Jawaban yang benar adalah: **{question['answer']}**")
+            st.error(f"❌ Jawaban salah. Jawaban yang benar adalah: **{question['answer']}**")  
