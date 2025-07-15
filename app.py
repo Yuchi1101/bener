@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # ================
-# Tambah background
+# Background Kimia
 # ================
 page_bg = """
 <style>
@@ -21,10 +21,26 @@ h1, h2, h3, .stMarkdown, .stTextInput {
 
 [data-testid="stSidebar"] {
     background-color: #262730;
+    color: white;
 }
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
+
+# ==========================
+# Inisialisasi session state
+# ==========================
+if "sudah_mulai" not in st.session_state:
+    st.session_state.sudah_mulai = False
+
+# ===================
+# Sidebar Navigation
+# ===================
+st.sidebar.title("🔬 Navigasi")
+if st.session_state.sudah_mulai:
+    page = st.sidebar.radio("Menu", ["Beranda", "Senyawa Kimia", "Quiz"])
+else:
+    page = st.sidebar.radio("Menu", ["Beranda"])
 
 # ===================
 # Data Senyawa Kimia
@@ -126,12 +142,6 @@ senyawa_kimia = {
 }
 
 # ===================
-# Sidebar Navigation
-# ===================
-st.sidebar.title("🔬 Navigasi")
-page = st.sidebar.radio("Menu", ["Beranda", "Senyawa Kimia", "Quiz"])
-
-# ===================
 # 1. Halaman Beranda
 # ===================
 if page == "Beranda":
@@ -140,18 +150,23 @@ if page == "Beranda":
 <div style='background-color: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 10px'>
     <h3>🚨 Kimia bukan cuma soal rumus, tapi juga soal <em>keselamatan!</em></h3>
     <p>Kenali senyawa kimia penting, potensi bahayanya, dan cara penanganannya yang aman 💥🧤</p>
-    <p>Klik menu di samping untuk mulai belajar, dan uji pemahamanmu di akhir lewat kuis interaktif!</p>
+    <p>Kelompok 4 | Kimia Kesehatan</p>
 </div>
 """, unsafe_allow_html=True)
 
+    if not st.session_state.sudah_mulai:
+        if st.button("🚀 Selanjutnya"):
+            st.session_state.sudah_mulai = True
+            st.experimental_rerun()
+    else:
+        st.success("✅ Selamat datang! Gunakan menu di samping untuk mulai belajar.")
+
 # ===================
-# 2. Halaman Senyawa Kimia
+# 2. Halaman Senyawa
 # ===================
 elif page == "Senyawa Kimia":
     st.title("🧪 Daftar Senyawa Berdasarkan Golongan")
-
     golongan = st.selectbox("Pilih Golongan Senyawa", list(senyawa_kimia.keys()))
-
     if golongan:
         st.subheader(f"📚 Senyawa dalam Golongan: {golongan}")
         for nama, info in senyawa_kimia[golongan].items():
