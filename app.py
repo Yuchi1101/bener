@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+image.open("1000220860.jpg")
 
 # ===================
 # Data Senyawa Kimia
