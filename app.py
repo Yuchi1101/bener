@@ -1,37 +1,34 @@
 import streamlit as st
 import random
-import base64
 
-# ====================
-# Fungsi Tambah Background
-# ====================
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image:
-        encoded = base64.b64encode(image.read()).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-        .block-container {{
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+# ================
+# Tambah background
+# ================
+page_bg = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://images.unsplash.com/photo-1581092919535-9123212396c8");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
-# Tambahkan background bertema kimia
-add_bg_from_local("background_kimia.png")
+h1, h2, h3, .stMarkdown, .stTextInput {
+    color: white !important;
+    text-shadow: 1px 1px 2px black;
+}
 
-# ====================
+[data-testid="stSidebar"] {
+    background-color: #262730;
+}
+</style>
+"""
+st.markdown(page_bg, unsafe_allow_html=True)
+
+# ===================
 # Data Senyawa Kimia
-# ====================
+# ===================
 senyawa_kimia = {
     "Asam": {
         "Asam Sulfat (H₂SO₄)": {
@@ -128,37 +125,28 @@ senyawa_kimia = {
     }
 }
 
-# ====================
-# Sidebar Navigasi
-# ====================
+# ===================
+# Sidebar Navigation
+# ===================
 st.sidebar.title("🔬 Navigasi")
 page = st.sidebar.radio("Menu", ["Beranda", "Senyawa Kimia", "Quiz"])
 
-# ====================
-# Halaman Beranda (custom sesuai screenshot)
-# ====================
+# ===================
+# 1. Halaman Beranda
+# ===================
 if page == "Beranda":
-    st.markdown("<h1 style='text-align: center; color: white;'>⚠️ Aplikasi Informasi Senyawa Kimia</h1>", unsafe_allow_html=True)
+    st.title("💡 Pengenalan Risiko & Penanganan Senyawa Kimia")
     st.markdown("""
-<div style='background-color: rgba(0,0,0,0.6); padding: 20px; border-radius: 15px; color: white; font-size: 18px'>
-    <p><strong>Selamat datang!</strong> Aplikasi ini bertujuan memberikan edukasi tentang risiko, penanganan, dan perlindungan diri dari berbagai senyawa kimia berbahaya.</p>
-    
-    <p>🧪 Pelajari daftar senyawa berdasarkan golongan <br>
-    🛡 Ketahui bagaimana cara menangani bahan berbahaya dengan tepat <br>
-    🧠 Uji pengetahuanmu lewat kuis di akhir!</p>
-
-    <p><strong>Dibuat oleh:</strong><br>
-    Amir Nur Rauf (2420571) <br>
-    Annisa Zahra Syaepudin (2420574) <br>
-    Khaila Syahira Harpil (2420609) <br>
-    Rafly Asyqar Priana (2420644) <br>
-    Reinasty Vrilia Putri (2420650)</p>
+<div style='background-color: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 10px'>
+    <h3>🚨 Kimia bukan cuma soal rumus, tapi juga soal <em>keselamatan!</em></h3>
+    <p>Kenali senyawa kimia penting, potensi bahayanya, dan cara penanganannya yang aman 💥🧤</p>
+    <p>Klik menu di samping untuk mulai belajar, dan uji pemahamanmu di akhir lewat kuis interaktif!</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ====================
-# Halaman Senyawa Kimia
-# ====================
+# ===================
+# 2. Halaman Senyawa Kimia
+# ===================
 elif page == "Senyawa Kimia":
     st.title("🧪 Daftar Senyawa Berdasarkan Golongan")
 
@@ -172,9 +160,9 @@ elif page == "Senyawa Kimia":
                 st.markdown(f"**Penanganan:** {info['Penanganan']}")
                 st.markdown(f"**APD:** {info['APD']}")
 
-# ====================
-# Halaman Quiz
-# ====================
+# ===================
+# 3. Halaman Quiz
+# ===================
 elif page == "Quiz":
     st.title("🧠 Quiz Penanganan Senyawa Kimia")
     st.markdown("Jawablah pertanyaan berikut dengan memilih jawaban yang paling tepat.")
